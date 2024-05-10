@@ -18,15 +18,17 @@ app.use(express.json());
 
 app.post("/summarize", async (req, res) => {
   try {
+    console.log("Starting to summarize : " + process.env.GEMINI_KEY);
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_KEY);
     const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+    console.log("Created the gen Model");
     const prompt = req.body.text;
     const result = await model.generateContent(prompt);
     const response = result.response;
     const text = response.text();
     res.json({ text });
   } catch (error) {
-    console.error(error.response.data);
+    console.error(error.response);
     res.status(500).json({ error: "Summary Generation Failed." });
   }
 });
