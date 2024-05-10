@@ -2,11 +2,11 @@ import express from "express";
 import dotenv from "dotenv";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
-// process.on("uncaughtException", (err) => {
-//   console.log(`Error : ${err}`);
-//   console.log("Shutting Down the server due to uncaughtException");
-//   process.exit(1);
-// });
+process.on("uncaughtException", (err) => {
+  console.log(`Error : ${err}`);
+  console.log("Shutting Down the server due to uncaughtException");
+  process.exit(1);
+});
 
 if (process.env.NODE_ENV !== "production") {
   dotenv.config({ path: "config.env" });
@@ -16,21 +16,15 @@ const port = process.env.PORT || 3000;
 
 app.use(express.json());
 
-console.log("Starting to summarize : " + process.env.GEMINI_KEY);
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_KEY);
 const model = genAI.getGenerativeModel({ model: "gemini-pro" });
-console.log("Created the gen Model");
 
 app.post("/summarize", async (req, res) => {
   try {
     const prompt = req.body.text;
-    console.log("Request: " + req.body.text);
     const result = await model.generateContent(prompt);
-    console.log("Took the prompt and awaited...");
     const response = result.response;
-    console.log("Result response got it");
     const text = response.text();
-    console.log("Trying to send response: " + text);
     res.status(200).json({ text });
   } catch (error) {
     console.error(error || "Error data not found.");
