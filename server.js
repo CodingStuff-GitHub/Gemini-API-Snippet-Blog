@@ -23,6 +23,7 @@ app.post("/summarize", async (req, res) => {
     const model = genAI.getGenerativeModel({ model: "gemini-pro" });
     console.log("Created the gen Model");
     const prompt = req.body.text;
+    console.log("Request: " + req.body.text);
     const result = await model.generateContent(prompt);
     const response = result.response;
     const text = response.text();
