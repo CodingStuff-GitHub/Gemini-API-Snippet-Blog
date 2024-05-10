@@ -16,12 +16,13 @@ const port = process.env.PORT || 3000;
 
 app.use(express.json());
 
+console.log("Starting to summarize : " + process.env.GEMINI_KEY);
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_KEY);
+const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+console.log("Created the gen Model");
+
 app.post("/summarize", async (req, res) => {
   try {
-    console.log("Starting to summarize : " + process.env.GEMINI_KEY);
-    const genAI = new GoogleGenerativeAI(process.env.GEMINI_KEY);
-    const model = genAI.getGenerativeModel({ model: "gemini-pro" });
-    console.log("Created the gen Model");
     const prompt = req.body.text;
     console.log("Request: " + req.body.text);
     const result = await model.generateContent(prompt);
@@ -29,7 +30,7 @@ app.post("/summarize", async (req, res) => {
     const text = response.text();
     res.json({ text });
   } catch (error) {
-    console.error(error.response);
+    console.error(error.response.data || "Error data not found.");
     res.status(500).json({ error: "Summary Generation Failed." });
   }
 });
