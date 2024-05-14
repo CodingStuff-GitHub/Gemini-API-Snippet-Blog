@@ -14,6 +14,12 @@ if (process.env.NODE_ENV !== "production") {
 const app = express();
 const port = process.env.PORT || 3000;
 
+const corsOptions = {
+  origin: process.env.FRONTEND,
+  optionsSuccessStatus: 200,
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_KEY);
