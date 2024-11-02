@@ -1,7 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
-import config from "./config";
+import config from "./config.js";
 import routes from "./routes/routes.js";
 
 process.on("uncaughtException", (err) => {

@@ -1,6 +1,6 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import express from "express";
-import config from "./config";
+import config from "./config.js";
 import { StatusCodes } from "http-status-codes";
 
 const router = express.Router();
