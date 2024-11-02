@@ -1,14 +1,14 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import express from "express";
-import config from "./config.js";
+import config from "../config.js";
 import { StatusCodes } from "http-status-codes";
 
-const router = express.Router();
+const routes = express.Router();
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_KEY);
 const model = genAI.getGenerativeModel({ model: "gemini-pro" });
 
 // Summarize Endpoint
-router.post(config.SUMMARIZE_ENDPOINT, async (req, res) => {
+routes.post(config.SUMMARIZE_ENDPOINT, async (req, res) => {
   try {
     const prompt = req.body.text;
     const result = await model.generateContent(prompt);
@@ -23,4 +23,4 @@ router.post(config.SUMMARIZE_ENDPOINT, async (req, res) => {
   }
 });
 
-module.exports = router;
+export default routes;
