@@ -1,5 +1,4 @@
 import express from "express";
-import dotenv from "dotenv";
 import cors from "cors";
 import config from "./config.js";
 import routes from "./routes/routes.js";
@@ -10,12 +9,7 @@ process.on("uncaughtException", (err) => {
   process.exit(1);
 });
 
-if (process.env.NODE_ENV !== "production") {
-  dotenv.config({ path: "config.env" });
-}
 const app = express();
-const port = process.env.PORT || config.DEFAULT_PORT;
-
 const corsOptions = {
   origin: process.env.FRONTEND,
   optionsSuccessStatus: 200,
@@ -25,6 +19,6 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use("/api", routes);
 
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+app.listen(config.PORT, () => {
+  console.log(`Server is running on port ${config.PORT}`);
 });
