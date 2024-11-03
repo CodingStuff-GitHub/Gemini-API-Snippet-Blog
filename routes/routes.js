@@ -26,24 +26,23 @@ routes.post(config.SUMMARIZE_ENDPOINT, async (req, res) => {
 
 // Cache Endpoint
 routes.post(config.CACHE_ENDPOINT, async (req, res) => {
+  const client = createClient({
+    password: config.REDIS_PASSWORD,
+    socket: {
+      host: config.REDIS_HOST,
+      port: config.REDIS_PORT,
+    },
+  });
+
   try {
-    const client = createClient({
-      password: config.REDIS_PASSWORD,
-      socket: {
-        host: config.REDIS_HOST,
-        port: config.REDIS_PORT,
-      },
-    });
-    client
-      .connect()
-      .then(() => console.log("Connected to Redis"))
-      .catch(console.error);
+    await client.connect();
     res.status(StatusCodes.OK).json({ text: "Connected to Redis" });
   } catch (error) {
-    console.error(error || "Error data not found.");
     res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .json({ error: "Summary Generation Failed." });
+      .json({ text: "Unable to connect to Redis", error: error.message });
+  } finally {
+    client.disconnect();
   }
 });
 
