@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import config from "./config.js";
-import routes from "./routes/routes.js";
+import routes from "./routes.js";
 
 process.on("uncaughtException", (err) => {
   console.log(`Error : ${err}`);
