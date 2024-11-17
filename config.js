@@ -14,6 +14,8 @@ const config = {
   FRONTEND: process.env.FRONTEND,
   SUMMARIZE_ENDPOINT: "/summarize",
   CACHE_ENDPOINT: "/cache",
+  GET_SUMMARY_ENDPOINT: "/getCacheSummary",
+  POST_SUMMARY_ENDPOINT: "/postCacheSummary",
 };
 
 export default config;
